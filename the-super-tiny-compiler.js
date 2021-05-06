@@ -104,14 +104,22 @@
  * Most compilers break down into three primary stages: Parsing, Transformation,
  * and Code Generation
  *
+ * 大多数编译器都分为三个阶段：解析 => 转换 => 代码生成
+ *
  * 1. *Parsing* is taking raw code and turning it into a more abstract
  *    representation of the code.
+ *
+ * 1. *解析* 阶段一般是将原始代码（字符串）转变成更抽象的表示
  *
  * 2. *Transformation* takes this abstract representation and manipulates to do
  *    whatever the compiler wants it to.
  *
+ * 2. *转换* 阶段是操作这个抽象表示来做些什么
+ *
  * 3. *Code Generation* takes the transformed representation of the code and
  *    turns it into new code.
+ *
+ * 3. *代码生成* 阶段将经过转换的这个抽象表示重新生成为新的代码（字符串）
  */
 
 /**
@@ -121,12 +129,19 @@
  * Parsing typically gets broken down into two phases: Lexical Analysis and
  * Syntactic Analysis.
  *
+ * 解析阶段通常又分为词法分析和语法分析两个阶段
+ *
  * 1. *Lexical Analysis* takes the raw code and splits it apart into these things
  *    called tokens by a thing called a tokenizer (or lexer).
  *
  *    Tokens are an array of tiny little objects that describe an isolated piece
  *    of the syntax. They could be numbers, labels, punctuation, operators,
  *    whatever.
+ *
+ * 1. *词法分析* 过程使用原始代码通过调用一种称为标记器（或词法分析器）的东西，
+ *    将原始代码拆分成一些称为标记（tokens）的片段。
+ *
+ *    标记（tokens）是一组小的对象他们描述了一些相对隔离的词法片段。他们可以是数字、标签、标点符号、运算符等等。
  *
  * 2. *Syntactic Analysis* takes the tokens and reformats them into a
  *    representation that describes each part of the syntax and their relation
@@ -136,6 +151,11 @@
  *    An Abstract Syntax Tree, or AST for short, is a deeply nested object that
  *    represents code in a way that is both easy to work with and tells us a lot
  *    of information.
+ *
+ * 2. *语法分析* 过程将获取标记并将其重新格式化为一种表示，该表示描述语法的每个部分及其
+ *    相互之间的关系。这称为中间表示或抽象语法树（AST）。
+ *
+ *    抽象语法树，简称 AST，是一个嵌套很深的对象，它以一种既易于使用又能告诉我们大量信息的方式来表示代码。
  *
  * For the following syntax:
  *
@@ -225,6 +245,8 @@
  * In order to navigate through all of these nodes, we need to be able to
  * traverse through them. This traversal process goes to each node in the AST
  * depth-first.
+ *
+ * 为了浏览所有这些节点，我们需要能够遍历它们。此遍历过程以深度优先的方式到达 AST 中的每个节点。
  *
  *   {
  *     type: 'Program',
@@ -381,9 +403,11 @@
 function tokenizer(input) {
 
   // A `current` variable for tracking our position in the code like a cursor.
+  // 变量 current 用于跟踪所处代码的位置
   let current = 0;
 
   // And a `tokens` array for pushing our tokens to.
+  // 数组 tokens 存放 token
   let tokens = [];
 
   // We start by creating a `while` loop where we are setting up our `current`
@@ -394,6 +418,7 @@ function tokenizer(input) {
   while (current < input.length) {
 
     // We're also going to store the `current` character in the `input`.
+    // 存储 input 中 current 位置的字符
     let char = input[current];
 
     // The first thing we want to check for is an open parenthesis. This will
@@ -401,6 +426,7 @@ function tokenizer(input) {
     // character.
     //
     // We check to see if we have an open parenthesis:
+    // 检查当前字符是否是一个开放的左括号
     if (char === '(') {
 
       // If we do, we push a new token with the type `paren` and set the value
